@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sunshine Early Learning Centre - AI Assistant</title>
+  <title>Childcare AI Assistant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -117,6 +117,18 @@
       letter-spacing: 0.02em;
     }
 
+    .contact-strip {
+      width: 100%;
+      margin-top: 6px;
+      background: #fff;
+      border: 1px solid rgba(171, 197, 176, 0.28);
+      border-radius: 12px;
+      padding: 8px 12px;
+      color: #5c7867;
+      font-size: 0.83rem;
+      font-weight: 700;
+    }
+
     .admin-panel {
       background: linear-gradient(150deg, #fffeff, #f6fbf7);
       border-radius: 24px;
@@ -137,6 +149,72 @@
     .admin-top h2 {
       margin: 0;
       font-size: 1.12rem;
+    }
+
+    .settings-panel {
+      margin-bottom: 14px;
+      border: 1px solid rgba(170, 197, 176, 0.35);
+      border-radius: 14px;
+      background: linear-gradient(145deg, #ffffff, #f5faf6);
+      overflow: hidden;
+    }
+
+    .settings-panel summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 14px;
+      font-weight: 800;
+      color: #365743;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .settings-panel summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .settings-body {
+      border-top: 1px solid rgba(170, 197, 176, 0.25);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .settings-field {
+      display: grid;
+      gap: 4px;
+      font-size: 0.82rem;
+      color: #587362;
+      font-weight: 700;
+    }
+
+    .settings-field input {
+      border: 1px solid rgba(159, 187, 165, 0.45);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      color: #2f4f3f;
+      background: #fff;
+    }
+
+    .settings-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .logo-custom {
+      width: 46px;
+      height: 46px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: none;
+      box-shadow: 0 5px 12px rgba(86, 112, 95, 0.2);
     }
 
     .admin-actions {
@@ -703,7 +781,7 @@
     <section class="hero">
       <div class="brand">
         <div class="logo" aria-hidden="true">
-          <svg viewBox="0 0 100 100" width="46" height="46" role="img" aria-label="Sun logo">
+          <svg id="defaultLogo" viewBox="0 0 100 100" width="46" height="46" role="img" aria-label="Sun logo">
             <g fill="none" stroke-linecap="round" stroke-width="4">
               <circle cx="50" cy="50" r="20" fill="#FFCC65" stroke="#F5A63A" />
               <g stroke="#F5B24C">
@@ -718,23 +796,45 @@
               </g>
             </g>
           </svg>
+          <img id="customLogo" class="logo-custom" alt="Centre logo" />
         </div>
         <div>
-          <h1>Sunshine Early Learning Centre</h1>
-          <p>Where little ones shine</p>
+          <h1 id="brandName">Centre Name</h1>
+          <p id="brandTagline">Centre Tagline</p>
         </div>
       </div>
       <div class="lead-counter">
         <strong id="leadCount">0</strong>
         <span>Leads Captured</span>
       </div>
+      <div id="contactStrip" class="contact-strip">Contact details</div>
     </section>
 
     <section class="admin-panel">
+      <details class="settings-panel">
+        <summary>Centre Settings <span>Click to edit</span></summary>
+        <form id="settingsForm" class="settings-body">
+          <label class="settings-field">Centre Name<input id="cfgCentreName" type="text" /></label>
+          <label class="settings-field">Tagline<input id="cfgTagline" type="text" /></label>
+          <label class="settings-field">Assistant Name<input id="cfgAssistantName" type="text" /></label>
+          <label class="settings-field">Contact Phone<input id="cfgContactPhone" type="text" /></label>
+          <label class="settings-field">Contact Email<input id="cfgContactEmail" type="text" /></label>
+          <label class="settings-field">Contact Address<input id="cfgContactAddress" type="text" /></label>
+          <label class="settings-field">Webhook URL (optional)<input id="cfgWebhookUrl" type="url" placeholder="https://your-crm.com/webhook" /></label>
+          <label class="settings-field">Privacy Policy URL<input id="cfgPrivacyUrl" type="url" placeholder="https://..." /></label>
+          <label class="settings-field">Logo Image URL<input id="cfgLogoUrl" type="url" placeholder="https://..." /></label>
+          <label class="settings-field">Upload Logo<input id="cfgLogoFile" type="file" accept="image/*" /></label>
+          <div class="settings-actions">
+            <button class="btn" type="submit">Save Settings</button>
+            <button id="resetLogoBtn" class="btn btn-secondary" type="button">Reset Logo</button>
+          </div>
+        </form>
+      </details>
       <div class="admin-top">
-        <h2>New Enrolment Enquiries</h2>
+        <h2 id="adminHeading">New Enrolment Enquiries</h2>
         <div class="admin-actions">
           <button id="soundBtn" class="btn btn-secondary" type="button">Sound: On</button>
+          <button id="retryWebhookBtn" class="btn btn-secondary" type="button">Retry Pending</button>
           <button id="clearBtn" class="btn btn-danger" type="button">Clear Leads</button>
           <button id="pdfBtn" class="btn btn-secondary" type="button">Export PDF</button>
           <button id="exportBtn" class="btn" type="button">Export Leads CSV</button>
@@ -777,8 +877,8 @@
       <div class="chat-title">
         <div class="sun-mini" aria-hidden="true"></div>
         <div>
-          <h3>Sunny - AI Assistant</h3>
-          <p>Sunshine Early Learning Centre</p>
+          <h3 id="assistantHeading">AI Assistant</h3>
+          <p id="assistantSubheading">Centre</p>
         </div>
       </div>
       <button class="close-chat" id="closeChat" aria-label="Close chat">×</button>
@@ -795,6 +895,59 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    const CENTRE_CONFIG = {
+      centreName: "Sunshine Early Learning Centre",
+      tagline: "Where little ones shine",
+      assistantName: "Sunny",
+      adminHeading: "New Enrolment Enquiries",
+      locale: "en-AU",
+      timezonePhoneLabel: "Australian",
+      storagePrefix: "sunshine-centre",
+      csvFilePrefix: "sunshine-enquiries",
+      pdfTitle: "Enrolment Enquiries",
+      expectedCallWindowHours: 2,
+      pageSize: 6,
+      quickReplies: {
+        age: ["18 months", "2 years", "3 years"],
+        days: ["Monday & Tuesday", "Monday to Friday", "Tuesday, Thursday"],
+        careType: ["full time", "part time"]
+      },
+      theme: {
+        sun: "#ffcb61",
+        sunDeep: "#f8a93a",
+        sage: "#dce9de",
+        sageStrong: "#9cb89f",
+        confetti: ["#FFC64D", "#F39C51", "#8FB694", "#C2DEC7", "#FFEAB2"]
+      },
+      conversation: {
+        age: "How old is your child?",
+        days: "What days of the week are you looking for care?",
+        careType: "Are you looking for full time or part time care?",
+        childName: "What's your child's name?",
+        parentName: "Great. What's your full name?",
+        parentPhone: "Thanks! What's your best phone number?",
+        tourTime: "What is your preferred centre tour time? (for example: Tuesday 10am, weekday afternoons, or Friday 3:30pm)",
+        startDate: "When would you ideally like care to begin? (for example: ASAP, next month, or from 15 June)",
+        consent: "Final step: Do you consent to us contacting you by phone/SMS about enrolment and tours? Please reply yes or no.",
+        success: "Amazing, thank you! 🌟 Your enquiry has been successfully captured. Our director will personally call you within {callWindow} hours to discuss availability and arrange your centre tour."
+      },
+      validation: {
+        phoneRegex: /(?:\+?61\s?[2-478](?:\s?\d){8}|0[2-478](?:\s?\d){8})/
+      },
+      contact: {
+        phone: "(02) 9000 1234",
+        email: "hello@sunshineelc.com.au",
+        address: "123 Bright Street, Sydney NSW"
+      },
+      branding: {
+        logoUrl: ""
+      },
+      automation: {
+        webhookUrl: "",
+        privacyPolicyUrl: "https://example.com/privacy"
+      }
+    };
+
     const state = {
       step: 0,
       isTyping: false,
@@ -802,7 +955,7 @@
       searchTerm: "",
       sortMode: "newest",
       currentPage: 1,
-      pageSize: 6,
+      pageSize: CENTRE_CONFIG.pageSize,
       activity: [],
       currentLead: {
         childAge: "",
@@ -810,20 +963,35 @@
         careType: "",
         childName: "",
         parentName: "",
-        phone: ""
+        phone: "",
+        preferredTourTime: "",
+        preferredStartDate: "",
+        consentGiven: false,
+        leadScore: 0,
+        priority: "Warm",
+        webhookStatus: "Not sent",
+        leadId: ""
       },
       leads: []
     };
-    const STORAGE_KEY = "sunshine-centre-leads-v1";
-    const ACTIVITY_STORAGE_KEY = "sunshine-centre-activity-v1";
+    const STORAGE_KEY = `${CENTRE_CONFIG.storagePrefix}-leads-v1`;
+    const ACTIVITY_STORAGE_KEY = `${CENTRE_CONFIG.storagePrefix}-activity-v1`;
+    const SETTINGS_STORAGE_KEY = `${CENTRE_CONFIG.storagePrefix}-settings-v1`;
+    const WEBHOOK_QUEUE_STORAGE_KEY = `${CENTRE_CONFIG.storagePrefix}-webhook-queue-v1`;
 
-    const steps = [
-      "Hi there! I'm Sunny, the AI assistant for Sunshine Early Learning Centre. I'd love to help find the perfect care for your little one! How old is your child?",
-      "What days of the week are you looking for care?",
-      "Are you looking for full time or part time care?",
-      "What's your child's name?",
-      "Almost done! What's your full name and best phone number so our director can personally call you?"
-    ];
+    function buildSteps() {
+      return [
+        `Hi there! I'm ${CENTRE_CONFIG.assistantName}, the AI assistant for ${CENTRE_CONFIG.centreName}. I'd love to help find the perfect care for your little one! ${CENTRE_CONFIG.conversation.age}`,
+        CENTRE_CONFIG.conversation.days,
+        CENTRE_CONFIG.conversation.careType,
+        CENTRE_CONFIG.conversation.childName,
+        CENTRE_CONFIG.conversation.parentName,
+        CENTRE_CONFIG.conversation.parentPhone,
+        CENTRE_CONFIG.conversation.tourTime,
+        CENTRE_CONFIG.conversation.startDate,
+        CENTRE_CONFIG.conversation.consent
+      ];
+    }
 
     const chatWindow = document.getElementById("chatWindow");
     const openChat = document.getElementById("openChat");
@@ -836,6 +1004,7 @@
     const exportBtn = document.getElementById("exportBtn");
     const clearBtn = document.getElementById("clearBtn");
     const pdfBtn = document.getElementById("pdfBtn");
+    const retryWebhookBtn = document.getElementById("retryWebhookBtn");
     const soundBtn = document.getElementById("soundBtn");
     const searchInput = document.getElementById("searchInput");
     const sortSelect = document.getElementById("sortSelect");
@@ -845,12 +1014,181 @@
     const confettiLayer = document.getElementById("confettiLayer");
     const quickReplies = document.getElementById("quickReplies");
     const toast = document.getElementById("toast");
+    const brandName = document.getElementById("brandName");
+    const brandTagline = document.getElementById("brandTagline");
+    const adminHeading = document.getElementById("adminHeading");
+    const assistantHeading = document.getElementById("assistantHeading");
+    const assistantSubheading = document.getElementById("assistantSubheading");
+    const contactStrip = document.getElementById("contactStrip");
+    const defaultLogo = document.getElementById("defaultLogo");
+    const customLogo = document.getElementById("customLogo");
+    const settingsForm = document.getElementById("settingsForm");
+    const cfgCentreName = document.getElementById("cfgCentreName");
+    const cfgTagline = document.getElementById("cfgTagline");
+    const cfgAssistantName = document.getElementById("cfgAssistantName");
+    const cfgContactPhone = document.getElementById("cfgContactPhone");
+    const cfgContactEmail = document.getElementById("cfgContactEmail");
+    const cfgContactAddress = document.getElementById("cfgContactAddress");
+    const cfgWebhookUrl = document.getElementById("cfgWebhookUrl");
+    const cfgPrivacyUrl = document.getElementById("cfgPrivacyUrl");
+    const cfgLogoUrl = document.getElementById("cfgLogoUrl");
+    const cfgLogoFile = document.getElementById("cfgLogoFile");
+    const resetLogoBtn = document.getElementById("resetLogoBtn");
 
     const dayRegex = /\b(monday|mon|tuesday|tue|tues|wednesday|wed|thursday|thu|thur|thurs|friday|fri|saturday|sat|sunday|sun)\b/i;
     const ageRegex = /^\s*(\d{1,2})\s*(year|years|yr|yrs|month|months|mo|mths)\s*$/i;
     const childNameRegex = /^[A-Za-z]{2,}(?:\s[A-Za-z]+)*$/;
     const fullNameRegex = /^[A-Za-z]{2,}(?:\s[A-Za-z]{2,})+$/;
-    const auPhoneRegex = /(?:\+?61\s?[2-478](?:\s?\d){8}|0[2-478](?:\s?\d){8})/;
+    const phoneRegex = CENTRE_CONFIG.validation.phoneRegex;
+    const tourTimeRegex = /(?:mon|tue|wed|thu|fri|sat|sun|monday|tuesday|wednesday|thursday|friday|saturday|sunday|morning|afternoon|am|pm|\d{1,2}(:\d{2})?)/i;
+    const startDateRegex = /(?:asap|immediately|next|month|week|term|from|\d{1,2}[\/\-\s]\d{1,2}(?:[\/\-\s]\d{2,4})?|\d{1,2}\s+[a-z]+)/i;
+    const consentRegex = /^(yes|y|i consent|agree|confirmed)\b/i;
+    const noConsentRegex = /^(no|n|decline|do not consent)\b/i;
+
+    function applyBranding() {
+      document.title = `${CENTRE_CONFIG.centreName} - AI Assistant`;
+      brandName.textContent = CENTRE_CONFIG.centreName;
+      brandTagline.textContent = CENTRE_CONFIG.tagline;
+      adminHeading.textContent = CENTRE_CONFIG.adminHeading;
+      assistantHeading.textContent = `${CENTRE_CONFIG.assistantName} - AI Assistant`;
+      assistantSubheading.textContent = CENTRE_CONFIG.centreName;
+      contactStrip.textContent = `${CENTRE_CONFIG.contact.phone} • ${CENTRE_CONFIG.contact.email} • ${CENTRE_CONFIG.contact.address}`;
+      chatInput.placeholder = "Type your answer...";
+      document.documentElement.style.setProperty("--sun", CENTRE_CONFIG.theme.sun);
+      document.documentElement.style.setProperty("--sun-deep", CENTRE_CONFIG.theme.sunDeep);
+      document.documentElement.style.setProperty("--sage", CENTRE_CONFIG.theme.sage);
+      document.documentElement.style.setProperty("--sage-strong", CENTRE_CONFIG.theme.sageStrong);
+      if (CENTRE_CONFIG.branding.logoUrl) {
+        customLogo.src = CENTRE_CONFIG.branding.logoUrl;
+        customLogo.style.display = "block";
+        defaultLogo.style.display = "none";
+      } else {
+        customLogo.style.display = "none";
+        defaultLogo.style.display = "block";
+      }
+    }
+
+    function fillSettingsForm() {
+      cfgCentreName.value = CENTRE_CONFIG.centreName;
+      cfgTagline.value = CENTRE_CONFIG.tagline;
+      cfgAssistantName.value = CENTRE_CONFIG.assistantName;
+      cfgContactPhone.value = CENTRE_CONFIG.contact.phone;
+      cfgContactEmail.value = CENTRE_CONFIG.contact.email;
+      cfgContactAddress.value = CENTRE_CONFIG.contact.address;
+      cfgWebhookUrl.value = CENTRE_CONFIG.automation.webhookUrl;
+      cfgPrivacyUrl.value = CENTRE_CONFIG.automation.privacyPolicyUrl;
+      cfgLogoUrl.value = CENTRE_CONFIG.branding.logoUrl;
+    }
+
+    function saveSettings() {
+      const settingsPayload = {
+        centreName: CENTRE_CONFIG.centreName,
+        tagline: CENTRE_CONFIG.tagline,
+        assistantName: CENTRE_CONFIG.assistantName,
+        contact: CENTRE_CONFIG.contact,
+        branding: CENTRE_CONFIG.branding,
+        automation: CENTRE_CONFIG.automation
+      };
+      localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settingsPayload));
+    }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object") return;
+        CENTRE_CONFIG.centreName = parsed.centreName || CENTRE_CONFIG.centreName;
+        CENTRE_CONFIG.tagline = parsed.tagline || CENTRE_CONFIG.tagline;
+        CENTRE_CONFIG.assistantName = parsed.assistantName || CENTRE_CONFIG.assistantName;
+        CENTRE_CONFIG.contact.phone = parsed.contact?.phone || CENTRE_CONFIG.contact.phone;
+        CENTRE_CONFIG.contact.email = parsed.contact?.email || CENTRE_CONFIG.contact.email;
+        CENTRE_CONFIG.contact.address = parsed.contact?.address || CENTRE_CONFIG.contact.address;
+        CENTRE_CONFIG.branding.logoUrl = parsed.branding?.logoUrl || CENTRE_CONFIG.branding.logoUrl;
+        CENTRE_CONFIG.automation.webhookUrl = parsed.automation?.webhookUrl || CENTRE_CONFIG.automation.webhookUrl;
+        CENTRE_CONFIG.automation.privacyPolicyUrl = parsed.automation?.privacyPolicyUrl || CENTRE_CONFIG.automation.privacyPolicyUrl;
+      } catch (_error) {
+        /* no-op on bad saved settings */
+      }
+    }
+
+    function getWebhookQueue() {
+      try {
+        const raw = localStorage.getItem(WEBHOOK_QUEUE_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_error) {
+        return [];
+      }
+    }
+
+    function saveWebhookQueue(queue) {
+      localStorage.setItem(WEBHOOK_QUEUE_STORAGE_KEY, JSON.stringify(queue));
+    }
+
+    function scoreLead(lead) {
+      let score = 50;
+      if (lead.careType === "full time") score += 15;
+      if (/monday|tuesday|wednesday|thursday|friday/i.test(lead.daysNeeded)) score += 10;
+      if (/asap|immediately/i.test(lead.preferredStartDate)) score += 15;
+      if (/\d{1,2}(:\d{2})?\s?(am|pm)/i.test(lead.preferredTourTime)) score += 8;
+      if (lead.childAge && /month|1 year|2 year/i.test(lead.childAge)) score += 5;
+      const bounded = Math.max(0, Math.min(100, score));
+      const priority = bounded >= 80 ? "Hot" : bounded >= 65 ? "Warm" : "Nurture";
+      return { score: bounded, priority };
+    }
+
+    function scheduleWebhook(lead) {
+      if (!CENTRE_CONFIG.automation.webhookUrl) return;
+      const queue = getWebhookQueue();
+      queue.push({
+        leadId: lead.leadId,
+        attempts: 0,
+        nextAttemptAt: Date.now(),
+        payload: lead
+      });
+      saveWebhookQueue(queue);
+    }
+
+    async function flushWebhookQueue() {
+      if (!CENTRE_CONFIG.automation.webhookUrl) return;
+      const queue = getWebhookQueue();
+      if (!queue.length) return;
+      const now = Date.now();
+      const updatedQueue = [];
+
+      for (const item of queue) {
+        if (item.nextAttemptAt > now) {
+          updatedQueue.push(item);
+          continue;
+        }
+        try {
+          const response = await fetch(CENTRE_CONFIG.automation.webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(item.payload)
+          });
+          if (!response.ok) throw new Error("Webhook failed");
+          const lead = state.leads.find((entry) => entry.leadId === item.leadId);
+          if (lead) lead.webhookStatus = "Sent";
+          logActivity("Webhook", `Lead ${item.payload.childName} sent to webhook.`);
+        } catch (_error) {
+          item.attempts += 1;
+          if (item.attempts < 5) {
+            item.nextAttemptAt = now + item.attempts * 30000;
+            updatedQueue.push(item);
+          } else {
+            const lead = state.leads.find((entry) => entry.leadId === item.leadId);
+            if (lead) lead.webhookStatus = "Failed";
+            logActivity("Webhook", `Lead ${item.payload.childName} failed after retries.`);
+          }
+        }
+      }
+      saveWebhookQueue(updatedQueue);
+      saveLeads();
+      renderLeads();
+    }
 
     function escapeHtml(value) {
       return String(value)
@@ -961,15 +1299,46 @@
       }
 
       if (state.step === 4) {
-        const phoneMatch = value.match(auPhoneRegex);
-        const cleaned = value.replace(auPhoneRegex, "").replace(/[,-]/g, " ").replace(/\s+/g, " ").trim();
-
-        if (!phoneMatch || !fullNameRegex.test(cleaned)) {
-          return { valid: false, error: "Please include your full name and a valid Australian phone number." };
+        if (!fullNameRegex.test(value)) {
+          return { valid: false, error: "Please enter your full name (first and last name)." };
         }
+        state.currentLead.parentName = value;
+        return { valid: true };
+      }
 
-        state.currentLead.parentName = cleaned;
+      if (state.step === 5) {
+        const phoneMatch = value.match(phoneRegex);
+        if (!phoneMatch) {
+          return { valid: false, error: `Please enter a valid ${CENTRE_CONFIG.timezonePhoneLabel} phone number.` };
+        }
         state.currentLead.phone = formatPhone(phoneMatch[0]);
+        return { valid: true };
+      }
+
+      if (state.step === 6) {
+        if (!tourTimeRegex.test(value) || value.length < 4) {
+          return { valid: false, error: "Please share a preferred tour time like 'Tuesday 10am' or 'weekday afternoons'." };
+        }
+        state.currentLead.preferredTourTime = value;
+        return { valid: true };
+      }
+
+      if (state.step === 7) {
+        if (!startDateRegex.test(value) || value.length < 3) {
+          return { valid: false, error: "Please share when you'd like care to begin (for example: ASAP, next month, or 15 June)." };
+        }
+        state.currentLead.preferredStartDate = value;
+        return { valid: true };
+      }
+
+      if (state.step === 8) {
+        if (noConsentRegex.test(value)) {
+          return { valid: false, error: `We need your consent to contact you before submitting. You can review our privacy policy here: ${CENTRE_CONFIG.automation.privacyPolicyUrl}` };
+        }
+        if (!consentRegex.test(value)) {
+          return { valid: false, error: "Please reply 'yes' to provide consent and continue." };
+        }
+        state.currentLead.consentGiven = true;
         return { valid: true };
       }
 
@@ -984,8 +1353,16 @@
         careType: "",
         childName: "",
         parentName: "",
-        phone: ""
+        phone: "",
+        preferredTourTime: "",
+        preferredStartDate: "",
+        consentGiven: false,
+        leadScore: 0,
+        priority: "Warm",
+        webhookStatus: "Not sent",
+        leadId: ""
       };
+      const steps = buildSteps();
       aiSpeak(steps[0], 500);
     }
 
@@ -1005,7 +1382,14 @@
         if (Array.isArray(parsed)) {
           state.leads = parsed.map((lead) => ({
             ...lead,
-            timestampISO: lead.timestampISO || new Date().toISOString()
+            timestampISO: lead.timestampISO || new Date().toISOString(),
+            preferredTourTime: lead.preferredTourTime || "",
+            preferredStartDate: lead.preferredStartDate || "",
+            consentGiven: Boolean(lead.consentGiven),
+            leadScore: Number(lead.leadScore || 0),
+            priority: lead.priority || "Warm",
+            webhookStatus: lead.webhookStatus || "Not sent",
+            leadId: lead.leadId || `lead-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`
           }));
         }
       } catch (_error) {
@@ -1028,7 +1412,7 @@
       state.activity.unshift({
         type,
         message,
-        at: new Date().toLocaleString("en-AU", { dateStyle: "medium", timeStyle: "short" })
+        at: new Date().toLocaleString(CENTRE_CONFIG.locale, { dateStyle: "medium", timeStyle: "short" })
       });
       if (state.activity.length > 120) {
         state.activity = state.activity.slice(0, 120);
@@ -1054,12 +1438,19 @@
     function addLead() {
       const lead = {
         ...state.currentLead,
-        timestamp: new Date().toLocaleString("en-AU", { dateStyle: "medium", timeStyle: "short" }),
+        leadId: `lead-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        timestamp: new Date().toLocaleString(CENTRE_CONFIG.locale, { dateStyle: "medium", timeStyle: "short" }),
         timestampISO: new Date().toISOString()
       };
+      const scored = scoreLead(lead);
+      lead.leadScore = scored.score;
+      lead.priority = scored.priority;
+      lead.webhookStatus = CENTRE_CONFIG.automation.webhookUrl ? "Queued" : "Not configured";
       state.leads.unshift(lead);
       saveLeads();
       logActivity("Captured", `${lead.childName} enquiry submitted (${lead.careType}).`);
+      scheduleWebhook(lead);
+      flushWebhookQueue();
       renderLeads();
       triggerConfetti();
       beep(0.1, 520, "triangle", 0.05);
@@ -1077,6 +1468,11 @@
             lead.careType,
             lead.parentName,
             lead.phone,
+            lead.preferredTourTime,
+            lead.preferredStartDate,
+            lead.priority,
+            lead.leadScore,
+            lead.webhookStatus,
             lead.timestamp
           ].join(" ").toLowerCase();
           return combined.includes(term);
@@ -1122,16 +1518,16 @@
       }
 
       const latestLeadKey = state.leads.reduce((latest, lead) => {
-        if (!latest) return `${lead.timestampISO}|${lead.phone}`;
-        return new Date(lead.timestampISO) > new Date(latest.split("|")[0]) ? `${lead.timestampISO}|${lead.phone}` : latest;
+        if (!latest) return lead.leadId;
+        return new Date(lead.timestampISO) > new Date((state.leads.find((x) => x.leadId === latest) || {}).timestampISO || 0) ? lead.leadId : latest;
       }, "");
 
       pagedLeads.forEach((lead) => {
-        const sourceIndex = state.leads.findIndex((item) => item.timestampISO === lead.timestampISO && item.phone === lead.phone);
+        const sourceIndex = state.leads.findIndex((item) => item.leadId === lead.leadId);
         const card = document.createElement("article");
         card.className = "lead-card";
         card.dataset.index = String(sourceIndex);
-        const leadKey = `${lead.timestampISO}|${lead.phone}`;
+        const leadKey = lead.leadId;
         card.innerHTML = `
           ${leadKey === latestLeadKey ? '<div class="badge">New Enrolment Enquiry</div>' : ""}
           <h3>${escapeHtml(lead.childName)}</h3>
@@ -1140,6 +1536,11 @@
           <div class="lead-row"><b>Care Type:</b> ${escapeHtml(lead.careType)}</div>
           <div class="lead-row"><b>Parent:</b> ${escapeHtml(lead.parentName)}</div>
           <div class="lead-row"><b>Phone:</b> ${escapeHtml(lead.phone)}</div>
+          <div class="lead-row"><b>Preferred Tour:</b> ${escapeHtml(lead.preferredTourTime || "Not provided")}</div>
+          <div class="lead-row"><b>Preferred Start:</b> ${escapeHtml(lead.preferredStartDate || "Not provided")}</div>
+          <div class="lead-row"><b>Consent:</b> ${lead.consentGiven ? "Yes" : "No"}</div>
+          <div class="lead-row"><b>Priority:</b> ${escapeHtml(lead.priority || "Warm")} (${escapeHtml(String(lead.leadScore ?? 0))})</div>
+          <div class="lead-row"><b>Webhook:</b> ${escapeHtml(lead.webhookStatus || "Not sent")}</div>
           <div class="lead-row"><b>Received:</b> ${escapeHtml(lead.timestamp)}</div>
           <div class="lead-actions">
             <button type="button" class="lead-btn edit" data-action="edit">Edit</button>
@@ -1173,7 +1574,7 @@
     }
 
     function triggerConfetti() {
-      const colors = ["#FFC64D", "#F39C51", "#8FB694", "#C2DEC7", "#FFEAB2"];
+      const colors = CENTRE_CONFIG.theme.confetti;
       for (let i = 0; i < 120; i += 1) {
         const piece = document.createElement("span");
         piece.className = "confetti";
@@ -1196,7 +1597,7 @@
         return;
       }
 
-      const headers = ["Child Name", "Age", "Days Needed", "Care Type", "Parent Name", "Phone Number", "Timestamp"];
+      const headers = ["Child Name", "Age", "Days Needed", "Care Type", "Parent Name", "Phone Number", "Preferred Tour Time", "Preferred Start Date", "Consent", "Priority", "Lead Score", "Webhook Status", "Timestamp"];
       const rows = state.leads.map((lead) => [
         lead.childName,
         lead.childAge,
@@ -1204,6 +1605,12 @@
         lead.careType,
         lead.parentName,
         lead.phone,
+        lead.preferredTourTime,
+        lead.preferredStartDate,
+        lead.consentGiven ? "Yes" : "No",
+        lead.priority,
+        lead.leadScore,
+        lead.webhookStatus,
         lead.timestamp
       ]);
 
@@ -1213,7 +1620,7 @@
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `sunshine-enquiries-${Date.now()}.csv`;
+      link.download = `${CENTRE_CONFIG.csvFilePrefix}-${Date.now()}.csv`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -1240,6 +1647,12 @@
             <td>${escapeHtml(lead.careType)}</td>
             <td>${escapeHtml(lead.parentName)}</td>
             <td>${escapeHtml(lead.phone)}</td>
+            <td>${escapeHtml(lead.preferredTourTime || "")}</td>
+            <td>${escapeHtml(lead.preferredStartDate || "")}</td>
+            <td>${lead.consentGiven ? "Yes" : "No"}</td>
+            <td>${escapeHtml(lead.priority || "")}</td>
+            <td>${escapeHtml(String(lead.leadScore ?? ""))}</td>
+            <td>${escapeHtml(lead.webhookStatus || "")}</td>
             <td>${escapeHtml(lead.timestamp)}</td>
           </tr>
         `)
@@ -1249,7 +1662,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Sunshine Enrolment Enquiries</title>
+  <title>${escapeHtml(CENTRE_CONFIG.centreName)} ${escapeHtml(CENTRE_CONFIG.pdfTitle)}</title>
   <style>
     body { font-family: Nunito, Arial, sans-serif; margin: 24px; color: #2f4c3d; }
     h1 { margin: 0 0 4px; font-size: 24px; }
@@ -1261,13 +1674,13 @@
   </style>
 </head>
 <body>
-  <h1>Sunshine Early Learning Centre</h1>
-  <p>Where little ones shine</p>
-  <div class="meta">Generated: ${new Date().toLocaleString("en-AU")} | Total Leads: ${state.leads.length}</div>
+  <h1>${escapeHtml(CENTRE_CONFIG.centreName)}</h1>
+  <p>${escapeHtml(CENTRE_CONFIG.tagline)}</p>
+  <div class="meta">Generated: ${new Date().toLocaleString(CENTRE_CONFIG.locale)} | Total Leads: ${state.leads.length}</div>
   <table>
     <thead>
       <tr>
-        <th>Child Name</th><th>Age</th><th>Days Needed</th><th>Care Type</th><th>Parent Name</th><th>Phone</th><th>Timestamp</th>
+        <th>Child Name</th><th>Age</th><th>Days Needed</th><th>Care Type</th><th>Parent Name</th><th>Phone</th><th>Preferred Tour</th><th>Preferred Start</th><th>Consent</th><th>Priority</th><th>Score</th><th>Webhook</th><th>Timestamp</th>
       </tr>
     </thead>
     <tbody>${rows}</tbody>
@@ -1288,7 +1701,9 @@
           <input name="daysNeeded" value="${escapeHtml(lead.daysNeeded)}" placeholder="Days needed" />
           <input name="careType" value="${escapeHtml(lead.careType)}" placeholder="full time / part time" />
           <input name="parentName" value="${escapeHtml(lead.parentName)}" placeholder="Parent full name" />
-          <input name="phone" value="${escapeHtml(lead.phone)}" placeholder="Australian phone" />
+          <input name="phone" value="${escapeHtml(lead.phone)}" placeholder="${escapeHtml(CENTRE_CONFIG.timezonePhoneLabel)} phone" />
+          <input name="preferredTourTime" value="${escapeHtml(lead.preferredTourTime || "")}" placeholder="Preferred tour time" />
+          <input name="preferredStartDate" value="${escapeHtml(lead.preferredStartDate || "")}" placeholder="Preferred start date" />
         </div>
         <div class="lead-actions">
           <button type="button" class="lead-btn" data-action="save" data-index="${index}">Save</button>
@@ -1304,13 +1719,24 @@
       const careType = card.querySelector('input[name="careType"]').value.trim().toLowerCase();
       const parentName = card.querySelector('input[name="parentName"]').value.trim();
       const phoneRaw = card.querySelector('input[name="phone"]').value.trim();
+      const preferredTourTime = card.querySelector('input[name="preferredTourTime"]').value.trim();
+      const preferredStartDate = card.querySelector('input[name="preferredStartDate"]').value.trim();
 
       if (!childNameRegex.test(childName)) return showToast("Please enter a valid child name.");
       if (!ageRegex.test(childAge)) return showToast("Please enter a valid age.");
       if (!dayRegex.test(daysNeeded)) return showToast("Please include at least one day.");
       if (careType !== "full time" && careType !== "part time") return showToast("Care type must be full time or part time.");
       if (!fullNameRegex.test(parentName)) return showToast("Please enter a valid full parent name.");
-      if (!auPhoneRegex.test(phoneRaw)) return showToast("Please enter a valid Australian phone number.");
+      if (!phoneRegex.test(phoneRaw)) return showToast(`Please enter a valid ${CENTRE_CONFIG.timezonePhoneLabel} phone number.`);
+      if (!tourTimeRegex.test(preferredTourTime)) return showToast("Please enter a valid preferred tour time.");
+      if (!startDateRegex.test(preferredStartDate)) return showToast("Please enter a valid preferred start date.");
+      const scored = scoreLead({
+        childAge,
+        daysNeeded,
+        careType,
+        preferredTourTime,
+        preferredStartDate
+      });
 
       state.leads[index] = {
         ...state.leads[index],
@@ -1319,7 +1745,11 @@
         daysNeeded,
         careType,
         parentName,
-        phone: formatPhone(phoneRaw)
+        phone: formatPhone(phoneRaw),
+        preferredTourTime,
+        preferredStartDate,
+        leadScore: scored.score,
+        priority: scored.priority
       };
       saveLeads();
       logActivity("Edited", `${childName} lead details were updated.`);
@@ -1328,9 +1758,12 @@
     }
 
     function getQuickRepliesForStep(step) {
-      if (step === 0) return ["18 months", "2 years", "3 years"];
-      if (step === 1) return ["Monday & Tuesday", "Monday to Friday", "Tuesday, Thursday"];
-      if (step === 2) return ["full time", "part time"];
+      if (step === 0) return CENTRE_CONFIG.quickReplies.age;
+      if (step === 1) return CENTRE_CONFIG.quickReplies.days;
+      if (step === 2) return CENTRE_CONFIG.quickReplies.careType;
+      if (step === 6) return ["Tuesday 10am", "Weekday afternoons", "Friday 3:30pm"];
+      if (step === 7) return ["ASAP", "Next month", "From next term"];
+      if (step === 8) return ["Yes, I consent"];
       return [];
     }
 
@@ -1371,6 +1804,7 @@
     chatForm.addEventListener("submit", (event) => {
       event.preventDefault();
       if (state.isTyping) return;
+      const steps = buildSteps();
       const input = chatInput.value.trim();
       if (!input) return;
 
@@ -1389,7 +1823,7 @@
         aiSpeak(steps[state.step], 650);
       } else {
         addLead();
-        aiSpeak("Amazing, thank you! 🌟 Your enquiry has been successfully captured. Our director will personally call you within 2 hours to discuss availability and arrange your centre tour.", 650);
+        aiSpeak(CENTRE_CONFIG.conversation.success.replace("{callWindow}", String(CENTRE_CONFIG.expectedCallWindowHours)), 650);
         setTimeout(() => {
           resetConversation();
         }, 2200);
@@ -1403,6 +1837,10 @@
       state.soundEnabled = !state.soundEnabled;
       soundBtn.textContent = `Sound: ${state.soundEnabled ? "On" : "Off"}`;
       showToast(state.soundEnabled ? "Sound enabled." : "Sound muted.");
+    });
+    retryWebhookBtn.addEventListener("click", () => {
+      flushWebhookQueue();
+      showToast("Retrying queued webhook deliveries...");
     });
     window.addEventListener("keydown", (event) => {
       if (event.key === "Escape") chatWindow.classList.remove("open");
@@ -1457,12 +1895,59 @@
       }
     });
 
+    settingsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      CENTRE_CONFIG.centreName = cfgCentreName.value.trim() || CENTRE_CONFIG.centreName;
+      CENTRE_CONFIG.tagline = cfgTagline.value.trim() || CENTRE_CONFIG.tagline;
+      CENTRE_CONFIG.assistantName = cfgAssistantName.value.trim() || CENTRE_CONFIG.assistantName;
+      CENTRE_CONFIG.contact.phone = cfgContactPhone.value.trim() || CENTRE_CONFIG.contact.phone;
+      CENTRE_CONFIG.contact.email = cfgContactEmail.value.trim() || CENTRE_CONFIG.contact.email;
+      CENTRE_CONFIG.contact.address = cfgContactAddress.value.trim() || CENTRE_CONFIG.contact.address;
+      CENTRE_CONFIG.automation.webhookUrl = cfgWebhookUrl.value.trim();
+      CENTRE_CONFIG.automation.privacyPolicyUrl = cfgPrivacyUrl.value.trim() || CENTRE_CONFIG.automation.privacyPolicyUrl;
+      CENTRE_CONFIG.branding.logoUrl = cfgLogoUrl.value.trim();
+      saveSettings();
+      applyBranding();
+      showToast("Settings saved.");
+    });
+
+    cfgLogoFile.addEventListener("change", () => {
+      const file = cfgLogoFile.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = typeof reader.result === "string" ? reader.result : "";
+        if (!result) return;
+        CENTRE_CONFIG.branding.logoUrl = result;
+        cfgLogoUrl.value = result;
+        saveSettings();
+        applyBranding();
+        showToast("Logo uploaded.");
+      };
+      reader.readAsDataURL(file);
+    });
+
+    resetLogoBtn.addEventListener("click", () => {
+      CENTRE_CONFIG.branding.logoUrl = "";
+      cfgLogoUrl.value = "";
+      cfgLogoFile.value = "";
+      saveSettings();
+      applyBranding();
+      showToast("Logo reset to default.");
+    });
+
+    loadSettings();
+    applyBranding();
+    fillSettingsForm();
     loadLeads();
     loadActivity();
-    addMessage(steps[0], "ai");
+    addMessage(buildSteps()[0], "ai");
     renderLeads();
     renderTimeline();
     renderQuickReplies();
+    setInterval(() => {
+      flushWebhookQueue();
+    }, 45000);
   </script>
 </body>
 </html>
