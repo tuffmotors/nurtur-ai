@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sunshine Early Learning Centre - AI Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8f6f0;
+      --bg-soft: #fdfcf8;
+      --cream: #fff9ee;
+      --sage: #dce9de;
+      --sage-strong: #9cb89f;
+      --sun: #ffcb61;
+      --sun-deep: #f8a93a;
+      --text: #304139;
+      --muted: #6d7f75;
+      --white: #ffffff;
+      --card-shadow: 0 18px 35px rgba(70, 92, 75, 0.12);
+      --soft-shadow: 0 10px 25px rgba(55, 74, 60, 0.1);
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --spring: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Nunito", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, #ffffff 0%, transparent 35%),
+        radial-gradient(circle at 85% 10%, #edf5ee 0%, transparent 40%),
+        linear-gradient(145deg, var(--bg-soft), var(--bg));
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 26px 18px 36px;
+    }
+
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero {
+      background: linear-gradient(130deg, #fffdf7, #f4f8f2);
+      border-radius: 28px;
+      box-shadow: var(--card-shadow);
+      padding: 26px 22px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(172, 197, 176, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .logo {
+      width: 62px;
+      height: 62px;
+      flex: 0 0 62px;
+      border-radius: 18px;
+      background: linear-gradient(150deg, #fff3cf, #fffdf8);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 0 1px rgba(255, 171, 44, 0.2), 0 8px 20px rgba(255, 183, 84, 0.28);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.15rem, 2.7vw, 1.6rem);
+      line-height: 1.1;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .lead-counter {
+      background: var(--white);
+      border: 1px solid rgba(160, 187, 166, 0.3);
+      box-shadow: var(--soft-shadow);
+      padding: 12px 18px;
+      border-radius: 14px;
+      text-align: center;
+      min-width: 160px;
+    }
+
+    .lead-counter strong {
+      font-size: 1.45rem;
+      display: block;
+      color: #2f5a3f;
+      line-height: 1;
+    }
+
+    .lead-counter span {
+      font-size: 0.92rem;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .admin-panel {
+      background: linear-gradient(150deg, #fffeff, #f6fbf7);
+      border-radius: 24px;
+      border: 1px solid rgba(169, 194, 173, 0.25);
+      box-shadow: var(--card-shadow);
+      padding: 20px;
+    }
+
+    .admin-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .admin-top h2 {
+      margin: 0;
+      font-size: 1.12rem;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .lead-toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-meta {
+      margin-left: auto;
+      color: #5f7c6a;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .toolbar-input,
+    .toolbar-select {
+      border: 1px solid rgba(162, 188, 167, 0.45);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: #345242;
+      background: #fff;
+      min-width: 190px;
+    }
+
+    .btn {
+      border: 0;
+      background: linear-gradient(140deg, #95b89a, #7ea885);
+      color: #fff;
+      font-weight: 800;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(82, 120, 91, 0.28);
+      transition: transform 0.25s var(--spring), box-shadow 0.25s var(--spring);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 20px rgba(82, 120, 91, 0.35);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(140deg, #dfe8e1, #cad9cc);
+      color: #365543;
+      box-shadow: 0 8px 16px rgba(113, 141, 123, 0.2);
+    }
+
+    .btn-danger {
+      background: linear-gradient(145deg, #f0b8a9, #e59a89);
+      color: #fff;
+      box-shadow: 0 8px 16px rgba(170, 103, 83, 0.28);
+    }
+
+    .leads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 14px;
+    }
+
+    .lead-card {
+      border-radius: 17px;
+      background: linear-gradient(145deg, #ffffff, #f3f8f4);
+      border: 1px solid rgba(179, 202, 183, 0.28);
+      box-shadow: var(--soft-shadow);
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+      animation: popIn 0.55s var(--spring);
+    }
+
+    .lead-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      color: #365743;
+    }
+
+    .lead-row {
+      font-size: 0.92rem;
+      margin: 4px 0;
+      color: #4c6455;
+    }
+
+    .lead-row b {
+      color: #335143;
+    }
+
+    .lead-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .lead-btn {
+      border: 1px solid rgba(140, 170, 149, 0.5);
+      background: #f5faf6;
+      color: #2f4c3d;
+      border-radius: 10px;
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .lead-btn.delete {
+      border-color: rgba(184, 119, 100, 0.45);
+      background: #fff4f1;
+      color: #9d4c3a;
+    }
+
+    .lead-edit {
+      margin-top: 8px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .lead-edit input {
+      border: 1px solid rgba(158, 187, 164, 0.45);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-family: inherit;
+      font-size: 0.88rem;
+    }
+
+    .badge {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      background: linear-gradient(140deg, #fff1b4, #ffd56a);
+      color: #7d4f02;
+      font-size: 0.72rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      animation: pulseBadge 1.2s ease-in-out infinite;
+      box-shadow: 0 5px 12px rgba(255, 177, 38, 0.32);
+    }
+
+    .empty-state {
+      text-align: center;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px dashed rgba(144, 174, 151, 0.4);
+      color: #75907f;
+      padding: 18px;
+      font-weight: 600;
+    }
+
+    .pagination {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .page-text {
+      color: #5d7969;
+      font-size: 0.84rem;
+      font-weight: 700;
+      min-width: 110px;
+      text-align: center;
+    }
+
+    .timeline-panel {
+      margin-top: 18px;
+      border-radius: 16px;
+      border: 1px solid rgba(170, 196, 174, 0.3);
+      background: linear-gradient(145deg, #ffffff, #f4f8f5);
+      padding: 12px;
+    }
+
+    .timeline-panel h3 {
+      margin: 0 0 10px;
+      font-size: 0.96rem;
+      color: #365743;
+    }
+
+    .timeline-list {
+      display: grid;
+      gap: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .timeline-item {
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid rgba(177, 200, 182, 0.32);
+      padding: 8px 10px;
+      font-size: 0.83rem;
+      color: #4f6b5a;
+      line-height: 1.35;
+    }
+
+    .chat-launcher {
+      position: fixed;
+      right: 26px;
+      bottom: 26px;
+      width: 72px;
+      height: 72px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #ffe28f, #ffb95b);
+      box-shadow: 0 16px 28px rgba(219, 149, 46, 0.35);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: transform 0.35s var(--spring), box-shadow 0.35s var(--spring);
+    }
+
+    .chat-launcher:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 20px 30px rgba(219, 149, 46, 0.44);
+    }
+
+    .chat-launcher svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .chat-window {
+      position: fixed;
+      right: 24px;
+      bottom: 110px;
+      width: min(420px, calc(100vw - 26px));
+      height: min(660px, calc(100vh - 150px));
+      background: linear-gradient(155deg, #fffefc, #f4faf4);
+      border-radius: var(--radius-xl);
+      border: 1px solid rgba(172, 196, 176, 0.35);
+      box-shadow: 0 24px 45px rgba(61, 84, 69, 0.2);
+      overflow: hidden;
+      z-index: 30;
+      opacity: 0;
+      transform: translateY(20px) scale(0.92);
+      pointer-events: none;
+      transition: transform 0.45s var(--spring), opacity 0.45s var(--spring);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .chat-window.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .chat-head {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(177, 204, 181, 0.32);
+      background: linear-gradient(130deg, #fff9ea, #eff8ef);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .chat-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sun-mini {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7d7, var(--sun));
+      box-shadow: 0 0 0 5px rgba(255, 197, 91, 0.16);
+      position: relative;
+      flex: 0 0 36px;
+    }
+
+    .sun-mini::before {
+      content: "";
+      position: absolute;
+      inset: -9px;
+      border-radius: 50%;
+      border: 2px dashed rgba(249, 172, 64, 0.45);
+      animation: spin 8s linear infinite;
+    }
+
+    .chat-head h3 {
+      margin: 0;
+      font-size: 0.98rem;
+    }
+
+    .chat-head p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .close-chat {
+      border: none;
+      background: #ffffff;
+      color: #5f7768;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 800;
+      box-shadow: 0 4px 10px rgba(85, 102, 91, 0.18);
+    }
+
+    .chat-body {
+      padding: 16px 14px 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: linear-gradient(180deg, #fffefb, #f4f8f5);
+    }
+
+    .msg {
+      max-width: 85%;
+      border-radius: 16px;
+      padding: 11px 13px;
+      line-height: 1.4;
+      font-size: 0.95rem;
+      animation: rise 0.35s var(--spring);
+      box-shadow: 0 6px 16px rgba(65, 83, 73, 0.08);
+    }
+
+    .msg.ai {
+      background: #ffffff;
+      border: 1px solid rgba(177, 199, 182, 0.38);
+      align-self: flex-start;
+      border-top-left-radius: 7px;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: linear-gradient(150deg, #d3e9d7, #b9d8bf);
+      color: #183b25;
+      border-top-right-radius: 7px;
+    }
+
+    .typing {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #86a690;
+      animation: bounce 0.9s infinite;
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .dot:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      border-top: 1px solid rgba(170, 196, 174, 0.3);
+      background: #fff;
+    }
+
+    .quick-replies {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 0 12px 8px;
+      background: #fff;
+      border-top: 1px solid rgba(170, 196, 174, 0.15);
+    }
+
+    .chip {
+      border: 1px solid rgba(151, 180, 158, 0.5);
+      background: #f6fbf7;
+      color: #365543;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .chip:hover {
+      background: #eaf4ec;
+      transform: translateY(-1px);
+    }
+
+    .chip.hidden {
+      display: none;
+    }
+
+    .chat-input input {
+      width: 100%;
+      border: 1px solid rgba(166, 192, 171, 0.5);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-family: inherit;
+      font-size: 0.94rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .chat-input input:focus {
+      border-color: #8fb293;
+    }
+
+    .send {
+      border: 0;
+      border-radius: 12px;
+      width: 48px;
+      background: linear-gradient(145deg, #f9cd6a, #f5ad59);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 16px rgba(223, 153, 59, 0.34);
+      transition: transform 0.18s var(--spring);
+    }
+
+    .send:active {
+      transform: scale(0.93);
+    }
+
+    .confetti-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 14px;
+      opacity: 0.9;
+      animation: confettiDrop 1.6s ease-out forwards;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%) translateY(16px);
+      background: linear-gradient(135deg, #2f5a3f, #416b4f);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(35, 71, 50, 0.28);
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 70;
+      transition: all 0.35s var(--spring);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+      40% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    @keyframes rise {
+      from { transform: translateY(8px) scale(0.98); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: translateY(8px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes pulseBadge {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+    }
+
+    @keyframes confettiDrop {
+      0% {
+        transform: translateY(-30px) rotate(0deg);
+        opacity: 0;
+      }
+      20% { opacity: 1; }
+      100% {
+        transform: translateY(110vh) rotate(750deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 680px) {
+      body {
+        padding: 16px 12px 26px;
+      }
+
+      .hero {
+        border-radius: 20px;
+      }
+
+      .toolbar-input,
+      .toolbar-select {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .chat-launcher {
+        right: 16px;
+        bottom: 16px;
+        width: 64px;
+        height: 64px;
+      }
+
+      .chat-window {
+        right: 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100vh;
+        max-height: none;
+        border-radius: 22px 22px 0 0;
+        transform: translateY(30px) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 100 100" width="46" height="46" role="img" aria-label="Sun logo">
+            <g fill="none" stroke-linecap="round" stroke-width="4">
+              <circle cx="50" cy="50" r="20" fill="#FFCC65" stroke="#F5A63A" />
+              <g stroke="#F5B24C">
+                <line x1="50" y1="10" x2="50" y2="22" />
+                <line x1="50" y1="78" x2="50" y2="90" />
+                <line x1="10" y1="50" x2="22" y2="50" />
+                <line x1="78" y1="50" x2="90" y2="50" />
+                <line x1="22" y1="22" x2="30" y2="30" />
+                <line x1="70" y1="70" x2="78" y2="78" />
+                <line x1="22" y1="78" x2="30" y2="70" />
+                <line x1="70" y1="30" x2="78" y2="22" />
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h1>Sunshine Early Learning Centre</h1>
+          <p>Where little ones shine</p>
+        </div>
+      </div>
+      <div class="lead-counter">
+        <strong id="leadCount">0</strong>
+        <span>Leads Captured</span>
+      </div>
+    </section>
+
+    <section class="admin-panel">
+      <div class="admin-top">
+        <h2>New Enrolment Enquiries</h2>
+        <div class="admin-actions">
+          <button id="soundBtn" class="btn btn-secondary" type="button">Sound: On</button>
+          <button id="clearBtn" class="btn btn-danger" type="button">Clear Leads</button>
+          <button id="pdfBtn" class="btn btn-secondary" type="button">Export PDF</button>
+          <button id="exportBtn" class="btn" type="button">Export Leads CSV</button>
+        </div>
+      </div>
+      <div class="lead-toolbar">
+        <input id="searchInput" class="toolbar-input" type="text" placeholder="Search child, parent, phone, days..." />
+        <select id="sortSelect" class="toolbar-select">
+          <option value="newest">Sort: Newest First</option>
+          <option value="oldest">Sort: Oldest First</option>
+          <option value="childAZ">Sort: Child Name A-Z</option>
+          <option value="childZA">Sort: Child Name Z-A</option>
+        </select>
+        <div id="toolbarMeta" class="toolbar-meta">Showing 0 of 0</div>
+      </div>
+      <div id="leadsGrid" class="leads-grid">
+        <div class="empty-state">No enquiries yet. Leads captured in chat appear here instantly.</div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+      <section class="timeline-panel">
+        <h3>Activity Timeline</h3>
+        <div id="timelineList" class="timeline-list">
+          <div class="empty-state">No activity yet.</div>
+        </div>
+      </section>
+    </section>
+  </div>
+
+  <button class="chat-launcher" id="openChat" aria-label="Open chat">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z"></path>
+      <circle cx="9" cy="10" r="1.1" fill="white"></circle>
+      <circle cx="13" cy="10" r="1.1" fill="white"></circle>
+      <circle cx="17" cy="10" r="1.1" fill="white"></circle>
+    </svg>
+  </button>
+
+  <section class="chat-window" id="chatWindow" aria-live="polite">
+    <header class="chat-head">
+      <div class="chat-title">
+        <div class="sun-mini" aria-hidden="true"></div>
+        <div>
+          <h3>Sunny - AI Assistant</h3>
+          <p>Sunshine Early Learning Centre</p>
+        </div>
+      </div>
+      <button class="close-chat" id="closeChat" aria-label="Close chat">×</button>
+    </header>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="quick-replies" id="quickReplies"></div>
+    <form class="chat-input" id="chatForm">
+      <input id="chatInput" type="text" placeholder="Type your answer..." autocomplete="off" />
+      <button class="send" type="submit" aria-label="Send message">➤</button>
+    </form>
+  </section>
+
+  <div class="confetti-layer" id="confettiLayer"></div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const state = {
+      step: 0,
+      isTyping: false,
+      soundEnabled: true,
+      searchTerm: "",
+      sortMode: "newest",
+      currentPage: 1,
+      pageSize: 6,
+      activity: [],
+      currentLead: {
+        childAge: "",
+        daysNeeded: "",
+        careType: "",
+        childName: "",
+        parentName: "",
+        phone: ""
+      },
+      leads: []
+    };
+    const STORAGE_KEY = "sunshine-centre-leads-v1";
+    const ACTIVITY_STORAGE_KEY = "sunshine-centre-activity-v1";
+
+    const steps = [
+      "Hi there! I'm Sunny, the AI assistant for Sunshine Early Learning Centre. I'd love to help find the perfect care for your little one! How old is your child?",
+      "What days of the week are you looking for care?",
+      "Are you looking for full time or part time care?",
+      "What's your child's name?",
+      "Almost done! What's your full name and best phone number so our director can personally call you?"
+    ];
+
+    const chatWindow = document.getElementById("chatWindow");
+    const openChat = document.getElementById("openChat");
+    const closeChat = document.getElementById("closeChat");
+    const chatBody = document.getElementById("chatBody");
+    const chatForm = document.getElementById("chatForm");
+    const chatInput = document.getElementById("chatInput");
+    const leadsGrid = document.getElementById("leadsGrid");
+    const leadCount = document.getElementById("leadCount");
+    const exportBtn = document.getElementById("exportBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const pdfBtn = document.getElementById("pdfBtn");
+    const soundBtn = document.getElementById("soundBtn");
+    const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const toolbarMeta = document.getElementById("toolbarMeta");
+    const pagination = document.getElementById("pagination");
+    const timelineList = document.getElementById("timelineList");
+    const confettiLayer = document.getElementById("confettiLayer");
+    const quickReplies = document.getElementById("quickReplies");
+    const toast = document.getElementById("toast");
+
+    const dayRegex = /\b(monday|mon|tuesday|tue|tues|wednesday|wed|thursday|thu|thur|thurs|friday|fri|saturday|sat|sunday|sun)\b/i;
+    const ageRegex = /^\s*(\d{1,2})\s*(year|years|yr|yrs|month|months|mo|mths)\s*$/i;
+    const childNameRegex = /^[A-Za-z]{2,}(?:\s[A-Za-z]+)*$/;
+    const fullNameRegex = /^[A-Za-z]{2,}(?:\s[A-Za-z]{2,})+$/;
+    const auPhoneRegex = /(?:\+?61\s?[2-478](?:\s?\d){8}|0[2-478](?:\s?\d){8})/;
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function beep(duration = 0.07, frequency = 720, type = "sine", volume = 0.03) {
+      if (!state.soundEnabled || !window.AudioContext) return;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.value = frequency;
+      gain.gain.value = volume;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + duration);
+      osc.onended = () => ctx.close();
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1600);
+    }
+
+    function addMessage(text, from = "ai") {
+      const msg = document.createElement("div");
+      msg.className = `msg ${from}`;
+      msg.textContent = text;
+      chatBody.appendChild(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+      if (from === "ai") beep(0.05, 640, "sine", 0.02);
+      if (from === "user") beep(0.04, 820, "triangle", 0.02);
+    }
+
+    function showTyping() {
+      const wrap = document.createElement("div");
+      wrap.className = "msg ai";
+      wrap.id = "typing";
+      wrap.innerHTML = '<div class="typing"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>';
+      chatBody.appendChild(wrap);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function hideTyping() {
+      const typing = document.getElementById("typing");
+      if (typing) typing.remove();
+    }
+
+    function aiSpeak(text, delay = 650) {
+      state.isTyping = true;
+      chatInput.disabled = true;
+      showTyping();
+      setTimeout(() => {
+        hideTyping();
+        addMessage(text, "ai");
+        state.isTyping = false;
+        chatInput.disabled = false;
+        chatInput.focus();
+        renderQuickReplies();
+      }, delay);
+    }
+
+    function formatPhone(phoneRaw) {
+      return phoneRaw.replace(/[^\d+]/g, "");
+    }
+
+    function validateByStep(input) {
+      const value = input.trim();
+
+      if (state.step === 0) {
+        if (!ageRegex.test(value)) {
+          return { valid: false, error: "Please enter a valid age like '2 years' or '18 months'." };
+        }
+        state.currentLead.childAge = value;
+        return { valid: true };
+      }
+
+      if (state.step === 1) {
+        if (!dayRegex.test(value)) {
+          return { valid: false, error: "Please include at least one day of the week (for example: Monday, Wednesday)." };
+        }
+        state.currentLead.daysNeeded = value;
+        return { valid: true };
+      }
+
+      if (state.step === 2) {
+        const normal = value.toLowerCase();
+        if (normal !== "full time" && normal !== "part time") {
+          return { valid: false, error: "Please answer with exactly 'full time' or 'part time'." };
+        }
+        state.currentLead.careType = normal;
+        return { valid: true };
+      }
+
+      if (state.step === 3) {
+        if (!childNameRegex.test(value)) {
+          return { valid: false, error: "Please provide your child's name using letters only (minimum 2 characters)." };
+        }
+        state.currentLead.childName = value;
+        return { valid: true };
+      }
+
+      if (state.step === 4) {
+        const phoneMatch = value.match(auPhoneRegex);
+        const cleaned = value.replace(auPhoneRegex, "").replace(/[,-]/g, " ").replace(/\s+/g, " ").trim();
+
+        if (!phoneMatch || !fullNameRegex.test(cleaned)) {
+          return { valid: false, error: "Please include your full name and a valid Australian phone number." };
+        }
+
+        state.currentLead.parentName = cleaned;
+        state.currentLead.phone = formatPhone(phoneMatch[0]);
+        return { valid: true };
+      }
+
+      return { valid: false, error: "Something went wrong. Please try again." };
+    }
+
+    function resetConversation() {
+      state.step = 0;
+      state.currentLead = {
+        childAge: "",
+        daysNeeded: "",
+        careType: "",
+        childName: "",
+        parentName: "",
+        phone: ""
+      };
+      aiSpeak(steps[0], 500);
+    }
+
+    function saveLeads() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.leads));
+    }
+
+    function saveActivity() {
+      localStorage.setItem(ACTIVITY_STORAGE_KEY, JSON.stringify(state.activity));
+    }
+
+    function loadLeads() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) {
+          state.leads = parsed.map((lead) => ({
+            ...lead,
+            timestampISO: lead.timestampISO || new Date().toISOString()
+          }));
+        }
+      } catch (_error) {
+        state.leads = [];
+      }
+    }
+
+    function loadActivity() {
+      try {
+        const raw = localStorage.getItem(ACTIVITY_STORAGE_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) state.activity = parsed;
+      } catch (_error) {
+        state.activity = [];
+      }
+    }
+
+    function logActivity(type, message) {
+      state.activity.unshift({
+        type,
+        message,
+        at: new Date().toLocaleString("en-AU", { dateStyle: "medium", timeStyle: "short" })
+      });
+      if (state.activity.length > 120) {
+        state.activity = state.activity.slice(0, 120);
+      }
+      saveActivity();
+      renderTimeline();
+    }
+
+    function renderTimeline() {
+      timelineList.innerHTML = "";
+      if (!state.activity.length) {
+        timelineList.innerHTML = '<div class="empty-state">No activity yet.</div>';
+        return;
+      }
+      state.activity.slice(0, 12).forEach((entry) => {
+        const item = document.createElement("div");
+        item.className = "timeline-item";
+        item.innerHTML = `<b>${escapeHtml(entry.type)}:</b> ${escapeHtml(entry.message)}<br /><span>${escapeHtml(entry.at)}</span>`;
+        timelineList.appendChild(item);
+      });
+    }
+
+    function addLead() {
+      const lead = {
+        ...state.currentLead,
+        timestamp: new Date().toLocaleString("en-AU", { dateStyle: "medium", timeStyle: "short" }),
+        timestampISO: new Date().toISOString()
+      };
+      state.leads.unshift(lead);
+      saveLeads();
+      logActivity("Captured", `${lead.childName} enquiry submitted (${lead.careType}).`);
+      renderLeads();
+      triggerConfetti();
+      beep(0.1, 520, "triangle", 0.05);
+    }
+
+    function getVisibleLeads() {
+      const term = state.searchTerm.trim().toLowerCase();
+      let filtered = [...state.leads];
+      if (term) {
+        filtered = filtered.filter((lead) => {
+          const combined = [
+            lead.childName,
+            lead.childAge,
+            lead.daysNeeded,
+            lead.careType,
+            lead.parentName,
+            lead.phone,
+            lead.timestamp
+          ].join(" ").toLowerCase();
+          return combined.includes(term);
+        });
+      }
+
+      if (state.sortMode === "oldest") {
+        filtered.sort((a, b) => new Date(a.timestampISO || 0) - new Date(b.timestampISO || 0));
+      } else if (state.sortMode === "childAZ") {
+        filtered.sort((a, b) => a.childName.localeCompare(b.childName));
+      } else if (state.sortMode === "childZA") {
+        filtered.sort((a, b) => b.childName.localeCompare(a.childName));
+      } else {
+        filtered.sort((a, b) => new Date(b.timestampISO || 0) - new Date(a.timestampISO || 0));
+      }
+      return filtered;
+    }
+
+    function renderLeads() {
+      leadCount.textContent = String(state.leads.length);
+      leadsGrid.innerHTML = "";
+      pagination.innerHTML = "";
+
+      const visibleLeads = getVisibleLeads();
+      const totalVisible = visibleLeads.length;
+      const totalPages = Math.max(1, Math.ceil(totalVisible / state.pageSize));
+      if (state.currentPage > totalPages) state.currentPage = totalPages;
+      if (state.currentPage < 1) state.currentPage = 1;
+      const start = (state.currentPage - 1) * state.pageSize;
+      const pagedLeads = visibleLeads.slice(start, start + state.pageSize);
+      toolbarMeta.textContent = `Showing ${totalVisible ? start + 1 : 0}-${Math.min(start + state.pageSize, totalVisible)} of ${totalVisible}`;
+
+      if (!state.leads.length) {
+        leadsGrid.innerHTML = '<div class="empty-state">No enquiries yet. Leads captured in chat appear here instantly.</div>';
+        toolbarMeta.textContent = "Showing 0 of 0";
+        return;
+      }
+
+      if (!visibleLeads.length) {
+        leadsGrid.innerHTML = '<div class="empty-state">No leads match your current search.</div>';
+        toolbarMeta.textContent = "Showing 0 of 0";
+        return;
+      }
+
+      const latestLeadKey = state.leads.reduce((latest, lead) => {
+        if (!latest) return `${lead.timestampISO}|${lead.phone}`;
+        return new Date(lead.timestampISO) > new Date(latest.split("|")[0]) ? `${lead.timestampISO}|${lead.phone}` : latest;
+      }, "");
+
+      pagedLeads.forEach((lead) => {
+        const sourceIndex = state.leads.findIndex((item) => item.timestampISO === lead.timestampISO && item.phone === lead.phone);
+        const card = document.createElement("article");
+        card.className = "lead-card";
+        card.dataset.index = String(sourceIndex);
+        const leadKey = `${lead.timestampISO}|${lead.phone}`;
+        card.innerHTML = `
+          ${leadKey === latestLeadKey ? '<div class="badge">New Enrolment Enquiry</div>' : ""}
+          <h3>${escapeHtml(lead.childName)}</h3>
+          <div class="lead-row"><b>Age:</b> ${escapeHtml(lead.childAge)}</div>
+          <div class="lead-row"><b>Days:</b> ${escapeHtml(lead.daysNeeded)}</div>
+          <div class="lead-row"><b>Care Type:</b> ${escapeHtml(lead.careType)}</div>
+          <div class="lead-row"><b>Parent:</b> ${escapeHtml(lead.parentName)}</div>
+          <div class="lead-row"><b>Phone:</b> ${escapeHtml(lead.phone)}</div>
+          <div class="lead-row"><b>Received:</b> ${escapeHtml(lead.timestamp)}</div>
+          <div class="lead-actions">
+            <button type="button" class="lead-btn edit" data-action="edit">Edit</button>
+            <button type="button" class="lead-btn delete" data-action="delete">Delete</button>
+          </div>
+        `;
+        leadsGrid.appendChild(card);
+      });
+
+      if (totalPages > 1) {
+        pagination.innerHTML = `
+          <button type="button" class="lead-btn" data-page-action="prev">Previous</button>
+          <div class="page-text">Page ${state.currentPage} of ${totalPages}</div>
+          <button type="button" class="lead-btn" data-page-action="next">Next</button>
+        `;
+      }
+    }
+
+    function clearLeads() {
+      if (!state.leads.length) {
+        showToast("No leads to clear yet.");
+        return;
+      }
+      const confirmClear = window.confirm("Clear all captured leads?");
+      if (!confirmClear) return;
+      state.leads = [];
+      saveLeads();
+      logActivity("Bulk Clear", "All leads were removed from the dashboard.");
+      renderLeads();
+      showToast("All leads cleared.");
+    }
+
+    function triggerConfetti() {
+      const colors = ["#FFC64D", "#F39C51", "#8FB694", "#C2DEC7", "#FFEAB2"];
+      for (let i = 0; i < 120; i += 1) {
+        const piece = document.createElement("span");
+        piece.className = "confetti";
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.transform = `translateY(-30px) rotate(${Math.random() * 360}deg)`;
+        piece.style.width = `${7 + Math.random() * 8}px`;
+        piece.style.height = `${10 + Math.random() * 10}px`;
+        piece.style.animationDelay = `${Math.random() * 0.4}s`;
+        confettiLayer.appendChild(piece);
+      }
+      setTimeout(() => {
+        confettiLayer.innerHTML = "";
+      }, 1900);
+    }
+
+    function exportCSV() {
+      if (!state.leads.length) {
+        alert("No leads to export yet.");
+        return;
+      }
+
+      const headers = ["Child Name", "Age", "Days Needed", "Care Type", "Parent Name", "Phone Number", "Timestamp"];
+      const rows = state.leads.map((lead) => [
+        lead.childName,
+        lead.childAge,
+        lead.daysNeeded,
+        lead.careType,
+        lead.parentName,
+        lead.phone,
+        lead.timestamp
+      ]);
+
+      const esc = (value) => `"${String(value).replace(/"/g, '""')}"`;
+      const csv = [headers.map(esc).join(","), ...rows.map((r) => r.map(esc).join(","))].join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `sunshine-enquiries-${Date.now()}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
+    function exportPDF() {
+      if (!state.leads.length) {
+        alert("No leads to export yet.");
+        return;
+      }
+
+      const printWindow = window.open("", "_blank");
+      if (!printWindow) {
+        alert("Please allow popups to export PDF.");
+        return;
+      }
+      const rows = getVisibleLeads()
+        .map((lead) => `
+          <tr>
+            <td>${escapeHtml(lead.childName)}</td>
+            <td>${escapeHtml(lead.childAge)}</td>
+            <td>${escapeHtml(lead.daysNeeded)}</td>
+            <td>${escapeHtml(lead.careType)}</td>
+            <td>${escapeHtml(lead.parentName)}</td>
+            <td>${escapeHtml(lead.phone)}</td>
+            <td>${escapeHtml(lead.timestamp)}</td>
+          </tr>
+        `)
+        .join("");
+
+      printWindow.document.write(`<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Sunshine Enrolment Enquiries</title>
+  <style>
+    body { font-family: Nunito, Arial, sans-serif; margin: 24px; color: #2f4c3d; }
+    h1 { margin: 0 0 4px; font-size: 24px; }
+    p { margin: 0 0 16px; color: #5c7867; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { border: 1px solid #d6e4d9; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #eef6ef; }
+    .meta { margin-bottom: 14px; font-size: 12px; color: #678372; }
+  </style>
+</head>
+<body>
+  <h1>Sunshine Early Learning Centre</h1>
+  <p>Where little ones shine</p>
+  <div class="meta">Generated: ${new Date().toLocaleString("en-AU")} | Total Leads: ${state.leads.length}</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Child Name</th><th>Age</th><th>Days Needed</th><th>Care Type</th><th>Parent Name</th><th>Phone</th><th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>
+</body>
+</html>`);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => printWindow.print(), 200);
+    }
+
+    function openEditCard(card, lead, index) {
+      card.innerHTML = `
+        <h3>Editing ${escapeHtml(lead.childName)}</h3>
+        <div class="lead-edit">
+          <input name="childName" value="${escapeHtml(lead.childName)}" placeholder="Child name" />
+          <input name="childAge" value="${escapeHtml(lead.childAge)}" placeholder="Age (e.g. 2 years)" />
+          <input name="daysNeeded" value="${escapeHtml(lead.daysNeeded)}" placeholder="Days needed" />
+          <input name="careType" value="${escapeHtml(lead.careType)}" placeholder="full time / part time" />
+          <input name="parentName" value="${escapeHtml(lead.parentName)}" placeholder="Parent full name" />
+          <input name="phone" value="${escapeHtml(lead.phone)}" placeholder="Australian phone" />
+        </div>
+        <div class="lead-actions">
+          <button type="button" class="lead-btn" data-action="save" data-index="${index}">Save</button>
+          <button type="button" class="lead-btn delete" data-action="cancel">Cancel</button>
+        </div>
+      `;
+    }
+
+    function saveEditedLead(card, index) {
+      const childName = card.querySelector('input[name="childName"]').value.trim();
+      const childAge = card.querySelector('input[name="childAge"]').value.trim();
+      const daysNeeded = card.querySelector('input[name="daysNeeded"]').value.trim();
+      const careType = card.querySelector('input[name="careType"]').value.trim().toLowerCase();
+      const parentName = card.querySelector('input[name="parentName"]').value.trim();
+      const phoneRaw = card.querySelector('input[name="phone"]').value.trim();
+
+      if (!childNameRegex.test(childName)) return showToast("Please enter a valid child name.");
+      if (!ageRegex.test(childAge)) return showToast("Please enter a valid age.");
+      if (!dayRegex.test(daysNeeded)) return showToast("Please include at least one day.");
+      if (careType !== "full time" && careType !== "part time") return showToast("Care type must be full time or part time.");
+      if (!fullNameRegex.test(parentName)) return showToast("Please enter a valid full parent name.");
+      if (!auPhoneRegex.test(phoneRaw)) return showToast("Please enter a valid Australian phone number.");
+
+      state.leads[index] = {
+        ...state.leads[index],
+        childName,
+        childAge,
+        daysNeeded,
+        careType,
+        parentName,
+        phone: formatPhone(phoneRaw)
+      };
+      saveLeads();
+      logActivity("Edited", `${childName} lead details were updated.`);
+      renderLeads();
+      showToast("Lead updated.");
+    }
+
+    function getQuickRepliesForStep(step) {
+      if (step === 0) return ["18 months", "2 years", "3 years"];
+      if (step === 1) return ["Monday & Tuesday", "Monday to Friday", "Tuesday, Thursday"];
+      if (step === 2) return ["full time", "part time"];
+      return [];
+    }
+
+    function renderQuickReplies() {
+      quickReplies.innerHTML = "";
+      const choices = getQuickRepliesForStep(state.step);
+      if (!choices.length || state.isTyping) {
+        quickReplies.classList.add("hidden");
+        return;
+      }
+      quickReplies.classList.remove("hidden");
+      choices.forEach((label) => {
+        const chip = document.createElement("button");
+        chip.className = "chip";
+        chip.type = "button";
+        chip.textContent = label;
+        chip.addEventListener("click", () => {
+          chatInput.value = label;
+          chatForm.requestSubmit();
+        });
+        quickReplies.appendChild(chip);
+      });
+    }
+
+    openChat.addEventListener("click", () => {
+      chatWindow.classList.add("open");
+      openChat.style.transform = "scale(0.85)";
+      setTimeout(() => {
+        openChat.style.transform = "";
+      }, 220);
+      chatInput.focus();
+    });
+
+    closeChat.addEventListener("click", () => {
+      chatWindow.classList.remove("open");
+    });
+
+    chatForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (state.isTyping) return;
+      const input = chatInput.value.trim();
+      if (!input) return;
+
+      addMessage(input, "user");
+      chatInput.value = "";
+
+      const check = validateByStep(input);
+      if (!check.valid) {
+        aiSpeak(check.error, 520);
+        return;
+      }
+
+      state.step += 1;
+
+      if (state.step < steps.length) {
+        aiSpeak(steps[state.step], 650);
+      } else {
+        addLead();
+        aiSpeak("Amazing, thank you! 🌟 Your enquiry has been successfully captured. Our director will personally call you within 2 hours to discuss availability and arrange your centre tour.", 650);
+        setTimeout(() => {
+          resetConversation();
+        }, 2200);
+      }
+    });
+
+    exportBtn.addEventListener("click", exportCSV);
+    pdfBtn.addEventListener("click", exportPDF);
+    clearBtn.addEventListener("click", clearLeads);
+    soundBtn.addEventListener("click", () => {
+      state.soundEnabled = !state.soundEnabled;
+      soundBtn.textContent = `Sound: ${state.soundEnabled ? "On" : "Off"}`;
+      showToast(state.soundEnabled ? "Sound enabled." : "Sound muted.");
+    });
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") chatWindow.classList.remove("open");
+    });
+    searchInput.addEventListener("input", (event) => {
+      state.searchTerm = event.target.value;
+      state.currentPage = 1;
+      renderLeads();
+    });
+    sortSelect.addEventListener("change", (event) => {
+      state.sortMode = event.target.value;
+      state.currentPage = 1;
+      renderLeads();
+    });
+    pagination.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const action = target.dataset.pageAction;
+      if (!action) return;
+      const total = getVisibleLeads().length;
+      const totalPages = Math.max(1, Math.ceil(total / state.pageSize));
+      if (action === "prev" && state.currentPage > 1) state.currentPage -= 1;
+      if (action === "next" && state.currentPage < totalPages) state.currentPage += 1;
+      renderLeads();
+    });
+    leadsGrid.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const action = target.dataset.action;
+      if (!action) return;
+
+      const card = target.closest(".lead-card");
+      if (!card) return;
+      const index = Number(card.dataset.index);
+      if (!Number.isInteger(index) || index < 0 || !state.leads[index]) return;
+
+      if (action === "delete") {
+        const confirmed = window.confirm("Delete this lead?");
+        if (!confirmed) return;
+        const deletedName = state.leads[index].childName;
+        state.leads.splice(index, 1);
+        saveLeads();
+        logActivity("Deleted", `${deletedName} lead was deleted.`);
+        renderLeads();
+        showToast("Lead deleted.");
+      } else if (action === "edit") {
+        openEditCard(card, state.leads[index], index);
+      } else if (action === "cancel") {
+        renderLeads();
+      } else if (action === "save") {
+        saveEditedLead(card, index);
+      }
+    });
+
+    loadLeads();
+    loadActivity();
+    addMessage(steps[0], "ai");
+    renderLeads();
+    renderTimeline();
+    renderQuickReplies();
+  </script>
+</body>
+</html>
